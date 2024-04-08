@@ -40,7 +40,7 @@ BEGIN
 
     -- Inserindo dados na tabela Pedido
     INSERT INTO Pedido (codigoPedido, dataPedido)
-    SELECT codigoPedido, CONVERT(DATE, dataPedido)
+    SELECT codigoPedido, TRY_CONVERT(DATE, dataPedido)
     FROM carga;
 
     -- Inserindo dados na tabela Cliente
@@ -49,12 +49,15 @@ BEGIN
     FROM carga;
 
     -- Inserindo dados na tabela ItemPedido e Produto
-    DECLARE @codigoPedido INT, @qtd INT, @nomeProduto VARCHAR(255), @valor DECIMAL(18,2), @sku VARCHAR(50)
+    DECLARE @codigoPedido INT, @qtd INT, @nomeProduto VARCHAR(255), @valor VARCHAR(50), @sku VARCHAR(50)
 
     WHILE EXISTS (SELECT * FROM carga)
     BEGIN
         SELECT TOP 1 @codigoPedido = codigoPedido, @qtd = qtd, @nomeProduto = nomeProduto, @valor = valor, @sku = sku
         FROM carga
+
+        -- Converte valor para DECIMAL
+        SET @valor = TRY_CONVERT(DECIMAL(18,2), @valor)
 
         INSERT INTO ItemPedido (codigoPedido, qtd, nomeProduto, valor)
         VALUES (@codigoPedido, @qtd, @nomeProduto, @valor)
