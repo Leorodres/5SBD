@@ -1,0 +1,3 @@
+order-id;order-item-id;purchase-date;payments-date;buyer-email;buyer-name;cpf;buyer-phone-number;sku;product-name;quantity-purchased;currency;item-price;ship-service-level;recipient-name;ship-address-1;ship-address-2;ship-address-3;ship-city;ship-state;ship-postal-code;ship-country;ioss-number
+2;1;2024-05-07;2024-05-08;leon@gmail.com;leon;32223345690;21944445555;12345675;cadeira;2;brl;15.99;2;leon;travessa 3;;;rio de janeiro;rio de janeiro;21313540;brasil;IM0123456789
+2;2;2024-05-07;2024-05-08;leon@gmail.com;leon;32223345690;21944445555;12345678;mesa;5;brl;15.99;2;leon;travessa 3;;;rio de janeiro;rio de janeiro;21313540;brasil;IM0123456789
