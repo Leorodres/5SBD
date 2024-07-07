@@ -23,7 +23,6 @@ public class Pedido {
 
     private String status;
 
-    // Getters and setters
     public Long getId() {
         return id;
     }

@@ -20,7 +20,6 @@ public class ItemPedido {
     private Integer quantidade;
     private Double preco;
 
-    // Getters and setters
     public Long getId() {
         return id;
     }

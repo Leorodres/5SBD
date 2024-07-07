@@ -14,7 +14,6 @@ public class Produto {
     private double preco;
     private int estoque;
 
-    // Getters and setters
     public Long getId() {
         return id;
     }

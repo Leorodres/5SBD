@@ -1,9 +1,13 @@
 package com.example.demo.controller;
 
-import com.example.demo.application.service.CompraService;
-import com.example.demo.domain.model.MovimentacaoEstoque;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.example.demo.application.service.CompraService;
+import com.example.demo.domain.model.Compra;
 
 @RestController
 @RequestMapping("/api/compra")
@@ -13,7 +17,7 @@ public class CompraController {
     private CompraService compraService;
 
     @PostMapping
-    public MovimentacaoEstoque createCompra(@RequestBody MovimentacaoEstoque compra) {
+    public Compra createCompra(@RequestBody Compra compra) {
         return compraService.createCompra(compra);
     }
 }

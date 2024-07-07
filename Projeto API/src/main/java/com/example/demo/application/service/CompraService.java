@@ -1,12 +1,15 @@
 package com.example.demo.application.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.example.demo.domain.model.MovimentacaoEstoque;
+import com.example.demo.domain.model.Compra;
 import com.example.demo.domain.model.Pedido;
 import com.example.demo.domain.model.Produto;
-import com.example.demo.domain.repository.MovimentacaoEstoqueRepository;
+import com.example.demo.domain.repository.CompraRepository;
 import com.example.demo.domain.repository.PedidoRepository;
 import com.example.demo.domain.repository.ProdutoRepository;
 
@@ -14,7 +17,7 @@ import com.example.demo.domain.repository.ProdutoRepository;
 public class CompraService {
 
     @Autowired
-    private MovimentacaoEstoqueRepository movimentacaoEstoqueRepository;
+    private CompraRepository compraRepository;
 
     @Autowired
     private ProdutoRepository produtoRepository;
@@ -22,26 +25,27 @@ public class CompraService {
     @Autowired
     private PedidoRepository pedidoRepository;
 
-    public MovimentacaoEstoque createCompra(MovimentacaoEstoque compra) {
+    @Transactional
+    public Compra createCompra(Compra compra) {
         Produto produto = produtoRepository.findBySku(compra.getProduto().getSku())
                 .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
 
         produto.setEstoque(produto.getEstoque() + compra.getQuantidadeRequisitada());
         produtoRepository.save(produto);
 
-        // Verificar se alguma movimentação pendente pode ser completada
-        movimentacaoEstoqueRepository.findByProdutoAndEstoqueSuficienteFalse(produto)
-                .forEach(mov -> {
-                    if (produto.getEstoque() >= mov.getQuantidadeRequisitada()) {
-                        mov.setEstoqueSuficiente(true);
-                        movimentacaoEstoqueRepository.save(mov);
+        List<Compra> movimentacoesPendentes = compraRepository.findByProdutoAndEstoqueSuficienteFalse(produto);
+        for (Compra mov : movimentacoesPendentes) {
+            if (produto.getEstoque() >= mov.getQuantidadeRequisitada()) {
+                mov.setEstoqueSuficiente(true);
+                compraRepository.save(mov);
 
-                        Pedido pedido = mov.getPedido();
-                        pedido.setStatus("COMPLETO");
-                        pedidoRepository.save(pedido);
-                    }
-                });
+                Pedido pedido = mov.getPedido();
+                pedido.setStatus("COMPLETO");
+                pedidoRepository.save(pedido);
+            }
+        }
 
-        return compra;
+        return compraRepository.save(compra);
     }
 }
+

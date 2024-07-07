@@ -14,7 +14,6 @@ public class Cliente {
     private String cpf;
     private String telefone;
 
-    // Getters and setters
     public Long getId() {
         return id;
     }

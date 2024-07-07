@@ -1,30 +1,40 @@
 package com.example.demo.domain.model;
 
-import javax.persistence.*;
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
-@Table(name = "movimentacao_estoque")
-public class MovimentacaoEstoque {
+public class Compra {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "pedido_id")
+    @JoinColumn(name = "pedido_id", nullable = false)
     private Pedido pedido;
 
     @ManyToOne
-    @JoinColumn(name = "produto_id")
+    @JoinColumn(name = "produto_id", nullable = false)
     private Produto produto;
 
-    @Column(name = "quantidade_requisitada")
+    @Column(name = "quantidade_requisitada", nullable = false)
     private int quantidadeRequisitada;
 
-    @Column(name = "valor_total_item")
-    private double valorTotalItem;
+    @Column(name = "data_compra")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dataCompra;
 
-    @Column(name = "estoque_suficiente")
+    @Column(name = "estoque_suficiente", nullable = false)
     private boolean estoqueSuficiente;
 
     public Long getId() {
@@ -59,12 +69,12 @@ public class MovimentacaoEstoque {
         this.quantidadeRequisitada = quantidadeRequisitada;
     }
 
-    public double getValorTotalItem() {
-        return valorTotalItem;
+    public Date getDataCompra() {
+        return dataCompra;
     }
 
-    public void setValorTotalItem(double valorTotalItem) {
-        this.valorTotalItem = valorTotalItem;
+    public void setDataCompra(Date dataCompra) {
+        this.dataCompra = dataCompra;
     }
 
     public boolean isEstoqueSuficiente() {
